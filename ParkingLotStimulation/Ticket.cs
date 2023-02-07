@@ -8,10 +8,16 @@ namespace ParkingLotStimulation
 {
     internal class Ticket
     {
+        int _ticketNumber;
         string _vehicleNumber;
         string _inTime;
         string _outTime;
 
+        public int TicketNumber
+        {
+            get { return _ticketNumber; }
+            set { _ticketNumber = value; }
+        }
         public string VehicleNumber 
         {
             get { return _vehicleNumber; }  

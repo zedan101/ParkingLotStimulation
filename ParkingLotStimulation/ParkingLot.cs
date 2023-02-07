@@ -6,6 +6,9 @@
         {
             twowhl, fourwhl, heavyvch
         }
+
+        List<Slot> tickets= new List<Slot>();
+
         public Slot[] twoWheelerSlots = new Slot[200];
         public Slot[] fourWheelerSlots = new Slot[200];
         public Slot[] heavyVehicleSlots = new Slot[200];
@@ -20,21 +23,21 @@
             int index = 0;
             for (int i=0; i<200; i++)
             {
-                this.twoWheelerSlots[i] = new Slot("twowhl",false,index);
+                this.twoWheelerSlots[i] = new Slot(VehicleType.twowhl.ToString(),false,index);
                 index++;
             }
 
             index=0;
             for (int i = 0; i < 200; i++)
             {
-                this.fourWheelerSlots[i] = new Slot("fourwhl", false, index);
+                this.fourWheelerSlots[i] = new Slot(VehicleType.fourwhl.ToString(), false, index);
                 index++;
             }
 
             index = 0;
             for (int i = 0; i < 200; i++)
             {
-                this.heavyVehicleSlots[i] = new Slot("heavyvch", false, index);
+                this.heavyVehicleSlots[i] = new Slot(VehicleType.heavyvch.ToString(), false, index);
                 index++;
             }
         }
@@ -75,7 +78,7 @@
 
         public void BookSlot(string sltNum, string vchNum, string lotType)
         {
-            if (lotType == VehicleType.twowhl) 
+            if (lotType == VehicleType.twowhl.ToString()) 
             {
                 foreach (Slot slot in twoWheelerSlots)
                 {
@@ -99,7 +102,7 @@
                     }
                 }
             } 
-            else if(lotType == VehicleType.fourwhl) 
+            else if(lotType == VehicleType.fourwhl.ToString()) 
             {
                 foreach (Slot slot in fourWheelerSlots)
                 {
@@ -123,7 +126,7 @@
                     }
                 }
             }
-            else if(lotType == VehicleType.heavyvch) 
+            else if(lotType == VehicleType.heavyvch.ToString()) 
             {
                 foreach (Slot slot in heavyVehicleSlots)
                 {
@@ -153,7 +156,7 @@
 
         public void UnBookSlot(string sltNum, string lotType)
         {
-            if (lotType == "twowhl")
+            if (lotType == VehicleType.twowhl.ToString())
             {
                 foreach (Slot slot in twoWheelerSlots)
                 {
@@ -166,12 +169,12 @@
                     }
                     else
                     {
-                        Console.WriteLine("Slot already occupied vacent");
+                        Console.WriteLine("Slot already vacent");
                         break;
                     }
                 }
             }
-            else if (lotType == "fourwhl")
+            else if (lotType == VehicleType.fourwhl.ToString())
             {
                 foreach (Slot slot in fourWheelerSlots)
                 {
@@ -192,7 +195,7 @@
                     }
                 }
             }
-            else if (lotType=="heavyvch")
+            else if (lotType==VehicleType.heavyvch.ToString())
             {
                 foreach (Slot slot in heavyVehicleSlots)
                 {
@@ -214,11 +217,11 @@
                 }
             }
         }
-        public Boolean ValidateSlotNumber(string slotNum , string vehicleType)
+        public Boolean ValidateSlotNumber(string slotNum , int vehicleType)
         {
             if (!string.IsNullOrEmpty(slotNum))
             {
-                if (vehicleType == "0")
+                if (vehicleType == (int)VehicleType.twowhl)
                 {
                     Slot result = Array.Find(twoWheelerSlots,slot => slot.SlotNumber == slotNum);
                     if (string.IsNullOrEmpty(result.SlotNumber)) 
@@ -230,7 +233,7 @@
                         return true;
                     }
                 }
-                else if (vehicleType == "1")
+                else if (vehicleType == (int)VehicleType.fourwhl)
                 {
                     Slot result = Array.Find(fourWheelerSlots, slot => slot.SlotNumber == slotNum);
                     if (string.IsNullOrEmpty(result.SlotNumber))
@@ -242,7 +245,7 @@
                         return true;
                     }
                 }
-                else if (vehicleType == "2")
+                else if (vehicleType == (int)VehicleType.heavyvch)
                 {
                     Slot result = Array.Find(heavyVehicleSlots, slot => slot.SlotNumber == slotNum);
                     if (string.IsNullOrEmpty(result.SlotNumber))
