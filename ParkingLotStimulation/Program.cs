@@ -58,7 +58,6 @@ namespace ParkingLotStimulation
                                         Console.WriteLine("Invalid slotNumber");
                                         break;
                                     }
-                                    break;
                                 }
                                 else
                                 {
