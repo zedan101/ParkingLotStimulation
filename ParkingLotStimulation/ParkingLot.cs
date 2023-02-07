@@ -258,7 +258,7 @@
                 if (vehicleType == (int)VehicleType.twowhl)
                 {
                     Slot result = Array.Find(twoWheelerSlots,slot => slot.SlotNumber == slotNum);
-                    if (string.IsNullOrEmpty(result.SlotNumber)) 
+                    if (result==null) 
                     {
                         return false; 
                     }
@@ -270,7 +270,7 @@
                 else if (vehicleType == (int)VehicleType.fourwhl)
                 {
                     Slot result = Array.Find(fourWheelerSlots, slot => slot.SlotNumber == slotNum);
-                    if (string.IsNullOrEmpty(result.SlotNumber))
+                    if (result == null)
                     {
                         return false;
                     }
@@ -282,7 +282,7 @@
                 else if (vehicleType == (int)VehicleType.heavyvch)
                 {
                     Slot result = Array.Find(heavyVehicleSlots, slot => slot.SlotNumber == slotNum);
-                    if (string.IsNullOrEmpty(result.SlotNumber))
+                    if (result == null)
                     {
                         return false;
                     }

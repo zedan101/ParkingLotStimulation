@@ -1,4 +1,5 @@
 ﻿using System.Net.Sockets;
+using System.Security.AccessControl;
 
 namespace ParkingLotStimulation
 {
@@ -21,75 +22,103 @@ namespace ParkingLotStimulation
                 Console.WriteLine("To Empty A slot Enter 3");
                 Console.WriteLine("To View All Tickets Enter 4");
                 Console.WriteLine("To exit Enter 0");
-                int userAction = Convert.ToInt32(Console.ReadLine());
-                switch (userAction)
+                string userInput = Console.ReadLine();
+                int userAction;
+                if (int.TryParse(userInput, out userAction))
                 {
-                    case (int)Menu.exit:
-                        exit = true;
-                        break;
+                    switch (userAction)
+                    {
+                        case (int)Menu.exit:
+                            exit = true;
+                            break;
 
-                    case (int)Menu.occupancyStats:
-                        parking.Occupancystats();
-                        break;
+                        case (int)Menu.occupancyStats:
+                            parking.Occupancystats();
+                            break;
 
-                    case (int)Menu.bookSlot:
-                        Console.WriteLine("Enter Vehicle type \n twoWheeler->0 \n fourWheeler->1 \n heavyVehicle->2");
-                        int vchType = Convert.ToInt32(Console.ReadLine());
-                        if(vchType == 0 || vchType == 1 || vchType == 2)
-                        {
-                            Console.WriteLine("Enter Slot Number");
-                            string slotNumber = Console.ReadLine()!;
-                            if (parking.ValidateSlotNumber(slotNumber, vchType))
+                        case (int)Menu.bookSlot:
+                            Console.WriteLine("Enter Vehicle type \n twoWheeler->0 \n fourWheeler->1 \n heavyVehicle->2");
+                            userInput = Console.ReadLine();
+                            int vchType;
+                            if (int.TryParse(userInput, out vchType))
                             {
-                                Console.WriteLine("Enter Vehicle Number");
-                                string vehicleNum = Console.ReadLine()!;
-                                parking.BookSlot(slotNumber, vehicleNum, vchType);
+                                if (vchType == 0 || vchType == 1 || vchType == 2)
+                                {
+                                    Console.WriteLine("Enter Slot Number");
+                                    string slotNumber = Console.ReadLine()!;
+                                    if (parking.ValidateSlotNumber(slotNumber, vchType))
+                                    {
+                                        Console.WriteLine("Enter Vehicle Number");
+                                        string vehicleNum = Console.ReadLine()!;
+                                        parking.BookSlot(slotNumber, vehicleNum, vchType);
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Invalid slotNumber");
+                                        break;
+                                    }
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid Input");
+                                    break;
+                                }
                             }
                             else
                             {
-                                Console.WriteLine("Invalid slotNumber");
+                                Console.WriteLine("InValid Input");
+                                break;
                             }
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Invalid Input");
-                            break;
-                        }
 
-                    case (int)Menu.unBookSlot:
-                        Console.WriteLine("Enter Vehicle type \n twoWheeler->0 \n fourWheeler->1 \n heavyVehicle->2");
-                        vchType = Convert.ToInt32(Console.ReadLine());
-                        if (vchType == 0 || vchType == 1 || vchType == 2)
-                        {
-                            Console.WriteLine("Enter Slot Number");
-                            string slotNumToRemove = Console.ReadLine()!;
-                            Console.WriteLine("Enter Ticket Number");
-                            int ticketNum = Convert.ToInt32(Console.ReadLine());
-                            if (parking.ValidateSlotNumber(slotNumToRemove, vchType))
+                        case (int)Menu.unBookSlot:
+                            Console.WriteLine("Enter Vehicle type \n twoWheeler->0 \n fourWheeler->1 \n heavyVehicle->2");
+                            userInput = Console.ReadLine();
+                            if (int.TryParse(userInput, out vchType))
                             {
-                                parking.UnBookSlot(slotNumToRemove, vchType, ticketNum);
+                                if (vchType == 0 || vchType == 1 || vchType == 2)
+                                {
+                                    Console.WriteLine("Enter Slot Number");
+                                    string slotNumToRemove = Console.ReadLine()!;
+                                    if (parking.ValidateSlotNumber(slotNumToRemove, vchType))
+                                    {
+                                        Console.WriteLine("Enter Ticket Number");
+                                        int ticketNum = Convert.ToInt32(Console.ReadLine());
+                                        parking.UnBookSlot(slotNumToRemove, vchType, ticketNum);
+                                        break;
 
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Invalid slotNumber");
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid Input");
+                                    break;
+                                }
                             }
                             else
                             {
-                                Console.WriteLine("Invalid slotNumber");
+                                Console.WriteLine("Invalid Input");
+                                break;
                             }
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Invalid Input");
-                            break;
-                        }
 
-                    case (int)Menu.displayTickets:
-                        parking.DisplayTickets();
-                        break;
+                        case (int)Menu.displayTickets:
+                            parking.DisplayTickets();
+                            break;
 
-                    default:
-                        Console.WriteLine("wrong menu option");
-                        break;
+                        default:
+                            Console.WriteLine("wrong menu option");
+                            break;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Input");
                 }
             } while (!exit);
             Console.ReadLine();
