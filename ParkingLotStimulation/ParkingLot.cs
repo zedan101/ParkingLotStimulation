@@ -7,8 +7,8 @@
             twowhl, fourwhl, heavyvch
         }
 
-        List<Slot> tickets= new List<Slot>();
-
+        List<Slot> tickets = new List<Slot>();
+        int ticketNum = 0;
         public Slot[] twoWheelerSlots = new Slot[200];
         public Slot[] fourWheelerSlots = new Slot[200];
         public Slot[] heavyVehicleSlots = new Slot[200];
@@ -76,9 +76,9 @@
             Console.WriteLine("Occupied Heavy Vehicle parking is " + heavyVehicleOccupancyCount + " out of 200");
         }
 
-        public void BookSlot(string sltNum, string vchNum, string lotType)
+        public void BookSlot(string sltNum, string vchNum, int lotType)
         {
-            if (lotType == VehicleType.twowhl.ToString()) 
+            if (lotType == (int)VehicleType.twowhl) 
             {
                 foreach (Slot slot in twoWheelerSlots)
                 {
@@ -86,12 +86,15 @@
                     {
                         if (slot.IsBooked == false)
                         {
+                            ++ticketNum;
                             slot.VehicleNumber = vchNum;
                             slot.InTime = DateTime.Now.ToString("HH:mm:ss tt");
                             slot.IsBooked = true;
+                            slot.TicketNumber = ticketNum;
                             Console.WriteLine("Slot No. :-" + sltNum);
                             Console.WriteLine("Vehicle No. :-" + slot.VehicleNumber);
                             Console.WriteLine("In Time :-" + slot.InTime);
+                            tickets.Add(slot);
                             break;
                         }
                         else
@@ -102,7 +105,7 @@
                     }
                 }
             } 
-            else if(lotType == VehicleType.fourwhl.ToString()) 
+            else if(lotType == (int)VehicleType.fourwhl) 
             {
                 foreach (Slot slot in fourWheelerSlots)
                 {
@@ -110,12 +113,14 @@
                     {
                         if (slot.IsBooked == false)
                         {
+                            ++ticketNum;
                             slot.VehicleNumber = vchNum;
                             slot.InTime = DateTime.Now.ToString("HH:mm:ss tt");
                             slot.IsBooked = true;
                             Console.WriteLine("Slot No. :-" + sltNum);
                             Console.WriteLine("Vehicle No. :-" + slot.VehicleNumber);
                             Console.WriteLine("In Time :-" + slot.InTime);
+                            tickets.Add(slot);
                             break;
                         }
                         else
@@ -126,7 +131,7 @@
                     }
                 }
             }
-            else if(lotType == VehicleType.heavyvch.ToString()) 
+            else if(lotType == (int)VehicleType.heavyvch) 
             {
                 foreach (Slot slot in heavyVehicleSlots)
                 {
@@ -134,12 +139,14 @@
                     {
                         if (slot.IsBooked == false)
                         {
+                            ++ticketNum;
                             slot.VehicleNumber = vchNum;
                             slot.InTime = DateTime.Now.ToString("HH:mm:ss tt");
                             slot.IsBooked = true;
                             Console.WriteLine("Slot No. :-" + sltNum);
                             Console.WriteLine("Vehicle No. :-" + slot.VehicleNumber);
                             Console.WriteLine("In Time :-" + slot.InTime);
+                            tickets.Add(slot);
                             break;
                         }
                         else
@@ -154,27 +161,37 @@
             
         }
 
-        public void UnBookSlot(string sltNum, string lotType)
+        public void UnBookSlot(string sltNum, int lotType , int ticketNum)
         {
-            if (lotType == VehicleType.twowhl.ToString())
+            if (lotType == (int)VehicleType.twowhl)
             {
                 foreach (Slot slot in twoWheelerSlots)
                 {
-                    if (slot.SlotNumber == sltNum && slot.IsBooked==true)
+                    if (slot.SlotNumber == sltNum)
                     {
-                        slot.IsBooked = false;
-                        slot.OutTime = DateTime.Now.ToString();
-                        Console.WriteLine("Out Time :-" + slot.OutTime);
-                        break;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Slot already vacent");
-                        break;
+                        if (slot.IsBooked == true)
+                        {
+                            slot.IsBooked = false;
+                            foreach (Slot item in tickets)
+                            {
+                                if (item.TicketNumber == ticketNum)
+                                {
+                                    item.OutTime = DateTime.Now.ToString("HH:mm:ss tt");
+                                }
+                            }
+                            slot.OutTime = DateTime.Now.ToString("HH:mm:ss tt");
+                            Console.WriteLine("Out Time :-" + slot.OutTime);
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Slot already vacent");
+                            break;
+                        }
                     }
                 }
             }
-            else if (lotType == VehicleType.fourwhl.ToString())
+            else if (lotType == (int)VehicleType.fourwhl)
             {
                 foreach (Slot slot in fourWheelerSlots)
                 {
@@ -183,7 +200,14 @@
                         if (slot.IsBooked == true)
                         {
                             slot.IsBooked = false;
-                            slot.OutTime = DateTime.Now.ToString();
+                            foreach (Slot item in tickets)
+                            {
+                                if (item.TicketNumber == ticketNum)
+                                {
+                                    item.OutTime = DateTime.Now.ToString("HH:mm:ss tt");
+                                }
+                            }
+                            slot.OutTime = DateTime.Now.ToString("HH:mm:ss tt");
                             Console.WriteLine("Out Time :-" + slot.OutTime);
                             break;
                         }
@@ -195,7 +219,7 @@
                     }
                 }
             }
-            else if (lotType==VehicleType.heavyvch.ToString())
+            else if (lotType==(int)VehicleType.heavyvch)
             {
                 foreach (Slot slot in heavyVehicleSlots)
                 {
@@ -204,7 +228,14 @@
                         if (slot.IsBooked == true)
                         {
                             slot.IsBooked = false;
-                            slot.OutTime = DateTime.Now.ToString();
+                            foreach (Slot item in tickets)
+                            {
+                                if (item.TicketNumber == ticketNum)
+                                {
+                                    item.OutTime = DateTime.Now.ToString("HH:mm:ss tt");
+                                }
+                            }
+                            slot.OutTime = DateTime.Now.ToString("HH:mm:ss tt");
                             Console.WriteLine("Out Time :-" + slot.OutTime);
                             break;
                         }
@@ -217,6 +248,7 @@
                 }
             }
         }
+
         public Boolean ValidateSlotNumber(string slotNum , int vehicleType)
         {
             if (!string.IsNullOrEmpty(slotNum))
@@ -265,6 +297,25 @@
             else
             {
                 return false;
+            }
+        }
+
+        public void DisplayTickets()
+        {
+            if (tickets.Any())
+            {
+                foreach (Slot item in tickets)
+                {
+                    Console.WriteLine("Ticket Number :- " + item.TicketNumber);
+                    Console.WriteLine("Vehicle Number :- " + item.VehicleNumber);
+                    Console.WriteLine("Slot Number :- " + item.SlotNumber);
+                    Console.WriteLine("In Time :- " + item.InTime);
+                    Console.WriteLine("Out Time :- " + item.OutTime);
+                }
+            }
+            else
+            {
+                Console.WriteLine("no ticket has been initialized yet");
             }
         }
     }

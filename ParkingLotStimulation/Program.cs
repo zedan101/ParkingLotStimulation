@@ -6,7 +6,7 @@ namespace ParkingLotStimulation
     {
         enum Menu
         {
-            exit, occupancyStats , bookSlot , unBookSlot
+            exit, occupancyStats , bookSlot , unBookSlot , displayTickets
         }
         static void Main(string[] args)
         {
@@ -15,9 +15,11 @@ namespace ParkingLotStimulation
             Boolean exit = false;
             do
             {
+                Console.WriteLine("\n \n =======++++======== \n \n");
                 Console.WriteLine("To Check Occupancy Status Enter 1");
                 Console.WriteLine("To Issue ticket Enter 2");
                 Console.WriteLine("To Empty A slot Enter 3");
+                Console.WriteLine("To View All Tickets Enter 4");
                 Console.WriteLine("To exit Enter 0");
                 int userAction = Convert.ToInt32(Console.ReadLine());
                 switch (userAction)
@@ -33,55 +35,60 @@ namespace ParkingLotStimulation
                     case (int)Menu.bookSlot:
                         Console.WriteLine("Enter Vehicle type \n twoWheeler->0 \n fourWheeler->1 \n heavyVehicle->2");
                         int vchType = Convert.ToInt32(Console.ReadLine());
-                        Console.WriteLine("Enter Slot Number");
-                        string slotNumber = Console.ReadLine()!;
-                        if (parking.ValidateSlotNumber(slotNumber, vchType))
+                        if(vchType == 0 || vchType==1 || vchType==2)
                         {
-                            Console.WriteLine("Enter Vehicle Number");
-                            string vehicleNum = Console.ReadLine()!;
-                            if (vchType == 0)
+                            Console.WriteLine("Enter Slot Number");
+                            string slotNumber = Console.ReadLine()!;
+                            if (parking.ValidateSlotNumber(slotNumber, vchType))
                             {
-                                parking.BookSlot(slotNumber, vehicleNum, "twowhl");
+                                Console.WriteLine("Enter Vehicle Number");
+                                string vehicleNum = Console.ReadLine()!;
+                                parking.BookSlot(slotNumber, vehicleNum, vchType);
                             }
-                            else if (vchType == 1)
+                            else
                             {
-                                parking.BookSlot(slotNumber, vehicleNum, "fourwhl");
+                                Console.WriteLine("Invalid slotNumber");
                             }
-                            else if (vchType == 2)
-                            {
-                                parking.BookSlot(slotNumber, vehicleNum, "heavyvch");
-                            }
+                            break;
                         }
                         else
                         {
-                            Console.WriteLine("Invalid slotNumber");
+                            Console.WriteLine("Invalid Input");
+                            break;
                         }
-                        break;
 
                     case (int)Menu.unBookSlot:
                         Console.WriteLine("Enter Vehicle type \n twoWheeler->0 \n fourWheeler->1 \n heavyVehicle->2");
                         vchType = Convert.ToInt32(Console.ReadLine());
-                        Console.WriteLine("Enter Slot Number");
-                        string slotNumToRemove = Console.ReadLine()!;
-                        if (parking.ValidateSlotNumber(slotNumToRemove, vchType))
+                        if (vchType == 0 || vchType == 1 || vchType == 2)
                         {
-                            if (vchType == 0)
+                            Console.WriteLine("Enter Slot Number");
+                            string slotNumToRemove = Console.ReadLine()!;
+                            Console.WriteLine("Enter Ticket Number");
+                            int ticketNum = Convert.ToInt32(Console.ReadLine());
+                            if (parking.ValidateSlotNumber(slotNumToRemove, vchType))
                             {
-                                parking.UnBookSlot(slotNumToRemove, "twowhl");
+                                parking.UnBookSlot(slotNumToRemove, vchType, ticketNum);
+
                             }
-                            else if (vchType == 1)
+                            else
                             {
-                                parking.UnBookSlot(slotNumToRemove, "fourwhl");
+                                Console.WriteLine("Invalid slotNumber");
                             }
-                            else if (vchType == 2)
-                            {
-                                parking.UnBookSlot(slotNumToRemove, "heavyvch");
-                            }
+                            break;
                         }
                         else
                         {
-                            Console.WriteLine("Invalid slotNumber");
+                            Console.WriteLine("Invalid Input");
+                            break;
                         }
+
+                    case (int)Menu.displayTickets:
+                        parking.DisplayTickets();
+                        break;
+
+                    default:
+                        Console.WriteLine("wrong menu option");
                         break;
                 }
             } while (!exit);
