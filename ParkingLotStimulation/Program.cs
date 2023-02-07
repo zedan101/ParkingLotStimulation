@@ -35,7 +35,7 @@ namespace ParkingLotStimulation
                     case (int)Menu.bookSlot:
                         Console.WriteLine("Enter Vehicle type \n twoWheeler->0 \n fourWheeler->1 \n heavyVehicle->2");
                         int vchType = Convert.ToInt32(Console.ReadLine());
-                        if(vchType == 0 || vchType==1 || vchType==2)
+                        if(vchType == 0 || vchType == 1 || vchType == 2)
                         {
                             Console.WriteLine("Enter Slot Number");
                             string slotNumber = Console.ReadLine()!;

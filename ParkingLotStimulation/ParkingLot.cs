@@ -117,6 +117,7 @@
                             slot.VehicleNumber = vchNum;
                             slot.InTime = DateTime.Now.ToString("HH:mm:ss tt");
                             slot.IsBooked = true;
+                            slot.TicketNumber = ticketNum;
                             Console.WriteLine("Slot No. :-" + sltNum);
                             Console.WriteLine("Vehicle No. :-" + slot.VehicleNumber);
                             Console.WriteLine("In Time :-" + slot.InTime);
@@ -143,6 +144,7 @@
                             slot.VehicleNumber = vchNum;
                             slot.InTime = DateTime.Now.ToString("HH:mm:ss tt");
                             slot.IsBooked = true;
+                            slot.TicketNumber = ticketNum;
                             Console.WriteLine("Slot No. :-" + sltNum);
                             Console.WriteLine("Vehicle No. :-" + slot.VehicleNumber);
                             Console.WriteLine("In Time :-" + slot.InTime);
