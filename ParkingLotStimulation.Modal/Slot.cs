@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ParkingLotStimulation
 {
-    internal class Slot:Ticket
+    public class Slot:Ticket
     {
         string _slotNumber;
         Boolean _isBooked;

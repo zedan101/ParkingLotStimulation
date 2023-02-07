@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ParkingLotStimulation
 {
-    internal class Ticket
+    public class Ticket
     {
         int _ticketNumber;
         string _vehicleNumber;

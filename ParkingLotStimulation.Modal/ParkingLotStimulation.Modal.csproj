@@ -4,11 +4,6 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <OutputType>Exe</OutputType>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ParkingLotStimulation.Modal\ParkingLotStimulation.Modal.csproj" />
-  </ItemGroup>
 
 </Project>
