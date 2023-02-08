@@ -8,7 +8,7 @@ namespace ParkingLotStimulation
     {
         enum Menu
         {
-            Exit, OccupancyStats , BookSlot , UnBookSlot , DisplayTickets
+            Exit, OccupancyStats , BookSlot , UnBookSlot , DisplayTickets , DisplayTicketsByVchType ,heavyVehicleTakingExtraTime
         }
 
         static void Main(string[] args)
@@ -23,6 +23,8 @@ namespace ParkingLotStimulation
                 Console.WriteLine("To Issue ticket Enter 2");
                 Console.WriteLine("To Empty A slot Enter 3");
                 Console.WriteLine("To View All Tickets Enter 4");
+                Console.WriteLine("To View Tickets by Vehicle Type Enter 5");
+                Console.WriteLine("To View Heavy Vehicle taking Extra Time Enter 6");
                 Console.WriteLine("To exit Enter 0");
                 string userInput = Console.ReadLine();
                 int userAct;
@@ -111,6 +113,14 @@ namespace ParkingLotStimulation
 
                         case Menu.DisplayTickets:
                             parking.DisplayTickets();
+                            break;
+
+                        case Menu.DisplayTicketsByVchType:
+                            parking.DisplayTicketsByVehicleType();
+                            break;
+
+                        case Menu.heavyVehicleTakingExtraTime:
+                            parking.ExtraTimeParkedHeavyVehicle();
                             break;
 
                         default:

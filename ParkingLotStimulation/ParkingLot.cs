@@ -13,17 +13,17 @@
 
         public ParkingLot()
         {
-            InitializeSlots(twoWheelerSlots);
-            InitializeSlots(fourWheelerSlots);
-            InitializeSlots(heavyVehicleSlots);
+            InitializeSlots(twoWheelerSlots,VehicleType.twowhl);
+            InitializeSlots(fourWheelerSlots,VehicleType.fourwhl);
+            InitializeSlots(heavyVehicleSlots,VehicleType.heavyvch);
         }
 
-        public void InitializeSlots(Slot[] parkings)
+        public void InitializeSlots(Slot[] parkings,VehicleType vchTyp)
         {
             int index = 0;
             for (int i = 0; i < 200; i++)
             {
-                parkings[i] = new Slot(VehicleType.twowhl.ToString(), false, index);
+                parkings[i] = new Slot(vchTyp.ToString(), false, index);
                 index++;
             }
         }
@@ -58,9 +58,10 @@
                     if (slot.IsBooked == false)
                     {
                         slot.VehicleNumber = vchNum;
-                        slot.InTime = DateTime.Now.ToString("HH:mm:ss tt");
+                        slot.InTime = DateTime.Now;
                         slot.IsBooked = true;
                         slot.TicketNumber = tickets.Count + 1;
+                        slot.vchType = lotType.ToString();
                         Console.WriteLine("Slot No. :-" + sltNum);
                         Console.WriteLine("Vehicle No. :-" + slot.VehicleNumber);
                         Console.WriteLine("In Time :-" + slot.InTime);
@@ -107,10 +108,10 @@
                         {
                             if (item.TicketNumber == ticketNum)
                             {
-                                item.OutTime = DateTime.Now.ToString("HH:mm:ss tt");
+                                item.OutTime = DateTime.Now;
                             }
                         }
-                        slot.OutTime = DateTime.Now.ToString("HH:mm:ss tt");
+                        slot.OutTime = DateTime.Now;
                         Console.WriteLine("Out Time :-" + slot.OutTime);
                         break;
                     }
@@ -207,5 +208,43 @@
                 Console.WriteLine("no ticket has been initialized yet");
             }
         }
+
+        public void DisplayTicketsByVehicleType()
+        {
+            var quarryToGroupByVchType = from ticket in tickets
+                                         group ticket by ticket.vchType into ticketTypeGroup
+                                         select ticketTypeGroup;
+            foreach(var typeGroup in quarryToGroupByVchType)
+            {
+                Console.WriteLine(typeGroup.Key + ":-");
+                foreach(var tckt in typeGroup)
+                {
+                    Console.WriteLine("\t Ticket Number :- " + tckt.TicketNumber);
+                    Console.WriteLine("\t Vehicle Number :- " + tckt.VehicleNumber);
+                    Console.WriteLine("\t Vehicle Type :- " + tckt.vchType);
+                    Console.WriteLine("\t Slot Number :- " + tckt.SlotNumber);
+                    Console.WriteLine("\t In Time :- " + tckt.InTime);
+                    Console.WriteLine("\t Out Time :- " + tckt.OutTime);
+                }
+            }
+        }
+
+        public void ExtraTimeParkedHeavyVehicle()
+        {
+            var currentTime=DateTime.Now;
+            var quarryExtraTimeParkedHeavyVehicle= from ticket in tickets
+                                                   where ticket.vchType == "heavyvch" 
+                                                   && (currentTime- ticket.InTime).TotalSeconds >=1
+                                                   select ticket;
+            foreach(var tkt in quarryExtraTimeParkedHeavyVehicle)
+            {
+                Console.WriteLine("\t Ticket Number :- " + tkt.TicketNumber);
+                Console.WriteLine("\t Vehicle Number :- " + tkt.VehicleNumber);
+                Console.WriteLine("\t Slot Number :- " + tkt.SlotNumber);
+                Console.WriteLine("\t In Time :- " + tkt.InTime);
+                
+            }
+        }
+
     }
 }

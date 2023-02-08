@@ -10,8 +10,9 @@ namespace ParkingLotStimulation
     {
         int _ticketNumber;
         string _vehicleNumber;
-        string _inTime;
-        string _outTime;
+        DateTime _inTime;
+        DateTime _outTime;
+        public string vchType;
         public int TicketNumber
         {
             get { return _ticketNumber; }
@@ -22,12 +23,12 @@ namespace ParkingLotStimulation
             get { return _vehicleNumber; }
             set { _vehicleNumber = value; }
         }
-        public string InTime
+        public DateTime InTime
         {
             get { return _inTime; }
             set { _inTime = value; }
         }
-        public string OutTime
+        public DateTime OutTime
         {
             get { return _outTime; }
             set { _outTime = value; }
