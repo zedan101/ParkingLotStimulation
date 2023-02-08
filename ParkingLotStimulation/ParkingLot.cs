@@ -28,38 +28,25 @@
             }
         }
 
+        int OccupancyStatsFunction(Slot[] parking)
+        {
+            int occupancyCount=0;
+            foreach (Slot slot in parking)
+            {
+                if (slot.IsBooked == true)
+                {
+                    occupancyCount++;
+                    break;
+                }
+            }
+            return occupancyCount;
+        }
+
         public void Occupancystats()
         {
-            int twoWheelerOccupancyCount = 0;
-            int fourWheelerOccupancyCount = 0;
-            int heavyVehicleOccupancyCount = 0;
-            foreach (Slot slot in twoWheelerSlots)
-            {
-                if (slot.IsBooked == true)
-                {
-                    twoWheelerOccupancyCount++;
-                    break;
-                }
-            }
-            foreach (Slot slot in fourWheelerSlots)
-            {
-                if (slot.IsBooked == true)
-                {
-                    fourWheelerOccupancyCount++;
-                    break;
-                }
-            }
-            foreach (Slot slot in heavyVehicleSlots)
-            {
-                if (slot.IsBooked == true)
-                {
-                    heavyVehicleOccupancyCount++;
-                    break;
-                }
-            }
-            Console.WriteLine("Occupied Two Wheeler parking is " + twoWheelerOccupancyCount + " out of 200");
-            Console.WriteLine("Occupied Four Wheeler parking is " + fourWheelerOccupancyCount + " out of 200");
-            Console.WriteLine("Occupied Heavy Vehicle parking is " + heavyVehicleOccupancyCount + " out of 200");
+            Console.WriteLine("Occupied Two Wheeler parking is " + OccupancyStatsFunction(twoWheelerSlots) + " out of 200");
+            Console.WriteLine("Occupied Four Wheeler parking is " + OccupancyStatsFunction(fourWheelerSlots) + " out of 200");
+            Console.WriteLine("Occupied Heavy Vehicle parking is " + OccupancyStatsFunction(heavyVehicleSlots) + " out of 200");
         }
 
         void BookingFunction(string sltNum, string vchNum, VehicleType lotType, Slot[] parkingLot)

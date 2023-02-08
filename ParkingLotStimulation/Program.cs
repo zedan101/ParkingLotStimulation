@@ -1,4 +1,5 @@
-﻿using System.Net.Sockets;
+﻿using System.ComponentModel;
+using System.Net.Sockets;
 using System.Security.AccessControl;
 
 namespace ParkingLotStimulation
@@ -8,10 +9,6 @@ namespace ParkingLotStimulation
         enum Menu
         {
             Exit, OccupancyStats , BookSlot , UnBookSlot , DisplayTickets
-        }
-        public enum VehicleType
-        {
-            twowhl, fourwhl, heavyvch
         }
 
         static void Main(string[] args)
@@ -48,7 +45,7 @@ namespace ParkingLotStimulation
                             int vchType;
                             if (int.TryParse(vehicleType, out vchType))
                             {
-                                if (Enum.IsDefined(typeof(VehicleType), vchType))
+                                if (Enum.IsDefined(typeof(ParkingLot.VehicleType), vchType))
                                 {
                                     Console.WriteLine("Enter Slot Number");
                                     string slotNumber = Console.ReadLine()!;
@@ -61,19 +58,19 @@ namespace ParkingLotStimulation
                                     }
                                     else
                                     {
-                                        Console.WriteLine("Invalid slotNumber");
+                                        Warning("Invalid slotNumber");
                                         break;
                                     }
                                 }
                                 else
                                 {
-                                    Console.WriteLine("Invalid Input");
+                                    Warning("Invalid Input");
                                     break;
                                 }
                             }
                             else
                             {
-                                Console.WriteLine("InValid Input");
+                                Warning("InValid Input");
                                 break;
                             }
 
@@ -82,7 +79,7 @@ namespace ParkingLotStimulation
                             userInput = Console.ReadLine();
                             if (int.TryParse(userInput, out vchType))
                             {
-                                if (Enum.IsDefined(typeof(VehicleType), vchType))
+                                if (Enum.IsDefined(typeof(ParkingLot.VehicleType), vchType))
                                 {
                                     Console.WriteLine("Enter Slot Number");
                                     string slotNumToRemove = Console.ReadLine()!;
@@ -96,19 +93,19 @@ namespace ParkingLotStimulation
                                     }
                                     else
                                     {
-                                        Console.WriteLine("Invalid slotNumber");
+                                        Warning("Invalid slotNumber");
                                         break;
                                     }
                                 }
                                 else
                                 {
-                                    Console.WriteLine("Invalid Input");
+                                    Warning("Invalid Input");
                                     break;
                                 }
                             }
                             else
                             {
-                                Console.WriteLine("Invalid Input");
+                                Warning("Invalid Input");
                                 break;
                             }
 
@@ -117,7 +114,7 @@ namespace ParkingLotStimulation
                             break;
 
                         default:
-                            Console.WriteLine("wrong menu option");
+                            Warning("wrong menu option");
                             break;
                     }
                 }
@@ -126,6 +123,10 @@ namespace ParkingLotStimulation
                     Console.WriteLine("Invalid Input");
                 }
             } while (!exit);
+            void Warning(string msg)
+            {
+                Console.WriteLine(msg);
+            }
             Console.ReadLine();
         }
     }
