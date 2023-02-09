@@ -77,29 +77,19 @@ namespace ParkingLotStimulation
                         case Menu.UnBookSlot:
                             if (parking.ValidateParkingSpace(0))
                             {
-                                Console.WriteLine("Enter Vehicle type \n twoWheeler->0 \n fourWheeler->1 \n heavyVehicle->2");
-                                userInput = Console.ReadLine();
-                                if (parking.ValidateVehicleType(userInput))
+                                Console.WriteLine("Enter Slot Number");
+                                string slotNumToRemove = Console.ReadLine()!;
+                                if (parking.ValidateSlotNumber(slotNumToRemove))
                                 {
-                                    Console.WriteLine("Enter Slot Number");
-                                    string slotNumToRemove = Console.ReadLine()!;
-                                    if (parking.ValidateSlotNumber(slotNumToRemove))
-                                    {
-                                        Console.WriteLine("Enter Ticket Number");
-                                        int ticketNum = Convert.ToInt32(Console.ReadLine());
-                                        parking.UnBookSlot(slotNumToRemove, Enum.Parse<ParkingLot.VehicleType>(userInput), ticketNum);
-                                        break;
+                                    Console.WriteLine("Enter Ticket Number");
+                                    int ticketNum = Convert.ToInt32(Console.ReadLine());
+                                    parking.UnBookSlot(slotNumToRemove, ticketNum);
+                                    break;
 
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Invalid slotNumber");
-                                        break;
-                                    }
                                 }
                                 else
                                 {
-                                    Console.WriteLine("Invalid Input");
+                                    Console.WriteLine("Invalid slotNumber");
                                     break;
                                 }
                             }
@@ -108,6 +98,7 @@ namespace ParkingLotStimulation
                                 Console.WriteLine("All Slots Are vacent");
                                 break;
                             }
+
                         case Menu.DisplayTickets:
                             parking.DisplayTickets();
                             break;

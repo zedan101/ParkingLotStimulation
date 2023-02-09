@@ -34,7 +34,7 @@
             Console.WriteLine("Occupied Two Wheeler parking is " + parkingSlots.Count(e => e.IsBooked == true && e._slotType == "heavyvch") + " out of 200");
         }
 
-        public void BookSlot(string sltNum, string vchNum, VehicleType lotType)
+        public void BookSlot(string sltNum, string vchNum, VehicleType vchType)
         {
             foreach (Slot slot in parkingSlots)
             {
@@ -47,7 +47,7 @@
                         tickt.InTime = DateTime.Now;
                         slot.IsBooked = true;
                         tickt.TicketNumber = tickets.Count() + 1;
-                        tickt.vchType = lotType.ToString();
+                        tickt.vchType = vchType.ToString();
                         Console.WriteLine("Slot successfully booked :-" + sltNum);
                         tickets.Add(tickt);
                         break;
@@ -63,7 +63,7 @@
 
         }
 
-        public void UnBookSlot(string sltNum, VehicleType lotType , int ticketNum)
+        public void UnBookSlot(string sltNum , int ticketNum)
         {
             foreach (Slot slot in parkingSlots)
             {
@@ -189,8 +189,8 @@
         public void ExtraTimeParkedVehicle()
         {
             var currentTime=DateTime.Now;
-            var quarryExtraTimeParkedHeavyVehicle = tickets.Where(ticket=>((currentTime - ticket.InTime).Minutes > 1 && ticket.OutTime == new DateTime(0))
-                                                                 || (ticket.OutTime != new DateTime(0) && (ticket.OutTime-ticket.InTime).TotalMinutes>1));
+            var quarryExtraTimeParkedHeavyVehicle = tickets.Where(ticket=>((currentTime - ticket.InTime).Hours >= 1 && ticket.OutTime == new DateTime(0))
+                                                                 || (ticket.OutTime != new DateTime(0) && (ticket.OutTime-ticket.InTime).TotalHours >= 1));
             foreach (Ticket tkt in quarryExtraTimeParkedHeavyVehicle)
             {
                 Console.WriteLine("\t Ticket Number :- " + tkt.TicketNumber);
