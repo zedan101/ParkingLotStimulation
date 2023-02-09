@@ -13,6 +13,7 @@ namespace ParkingLotStimulation
         DateTime _inTime;
         DateTime _outTime;
         public string vchType;
+
         public int TicketNumber
         {
             get { return _ticketNumber; }

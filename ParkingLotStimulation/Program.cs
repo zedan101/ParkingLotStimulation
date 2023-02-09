@@ -38,7 +38,7 @@ namespace ParkingLotStimulation
                             break;
 
                         case Menu.OccupancyStats:
-                            parking.Occupancystats();
+                            parking.OccupancyStats();
                             break;
 
                         case Menu.BookSlot:
@@ -50,7 +50,7 @@ namespace ParkingLotStimulation
                                 {
                                     Console.WriteLine("Enter Slot Number");
                                     string slotNumber = Console.ReadLine()!;
-                                    if (parking.ValidateSlotNumber(slotNumber, Enum.Parse<ParkingLot.VehicleType>(vehicleType)))
+                                    if (parking.ValidateSlotNumber(slotNumber))
                                     {
                                         Console.WriteLine("Enter Vehicle Number");
                                         string vehicleNum = Console.ReadLine()!;
@@ -83,7 +83,7 @@ namespace ParkingLotStimulation
                                 {
                                     Console.WriteLine("Enter Slot Number");
                                     string slotNumToRemove = Console.ReadLine()!;
-                                    if (parking.ValidateSlotNumber(slotNumToRemove, Enum.Parse<ParkingLot.VehicleType>(userInput)))
+                                    if (parking.ValidateSlotNumber(slotNumToRemove))
                                     {
                                         Console.WriteLine("Enter Ticket Number");
                                         int ticketNum = Convert.ToInt32(Console.ReadLine());

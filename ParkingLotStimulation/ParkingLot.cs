@@ -7,50 +7,49 @@
             twowhl, fourwhl, heavyvch
         }
 
-        List<Slot> tickets = new List<Slot>();
-        public Slot[] twoWheelerSlots = new Slot[200];
-        public Slot[] fourWheelerSlots = new Slot[200];
-        public Slot[] heavyVehicleSlots = new Slot[200];
+        List<Ticket> tickets = new List<Ticket>();
+        public Slot[] parkingSlots = new Slot[600];
 
         public ParkingLot()
         {
-            InitializeSlots(twoWheelerSlots,VehicleType.twowhl);
-            InitializeSlots(fourWheelerSlots,VehicleType.fourwhl);
-            InitializeSlots(heavyVehicleSlots,VehicleType.heavyvch);
+            InitializeSlots(0 , 200 , VehicleType.twowhl);
+            InitializeSlots(200 , 400 ,VehicleType.fourwhl);
+            InitializeSlots(400 , 600 ,VehicleType.heavyvch);
         }
 
-        public void InitializeSlots(Slot[] parkings,VehicleType vchTyp)
+        public void InitializeSlots(int startIndex , int endIndex ,VehicleType vchTyp)
         {
             int index = 0;
-            for (int i = 0; i < 200; i++)
+            for (int i = startIndex; i < endIndex; i++)
             {
-                parkings[i] = new Slot(vchTyp.ToString(), false, index);
+                parkingSlots[i] = new Slot(vchTyp.ToString(), false, index);
                 index++;
             }
         }
 
-        public void Occupancystats()
+        public void OccupancyStats()
         {
-            Console.WriteLine("Occupied Two Wheeler parking is " + twoWheelerSlots.Count(e => e.IsBooked == true) + " out of 200");
-            Console.WriteLine("Occupied Four Wheeler parking is " + fourWheelerSlots.Count(e => e.IsBooked == true) + " out of 200");
-            Console.WriteLine("Occupied Heavy Vehicle parking is " + heavyVehicleSlots.Count(e => e.IsBooked == true) + " out of 200");
+            Console.WriteLine("Occupied Two Wheeler parking is " + parkingSlots.Count(e => e.IsBooked == true && e._slotType == "twowhl") + " out of 200");
+            Console.WriteLine("Occupied Two Wheeler parking is " + parkingSlots.Count(e => e.IsBooked == true && e._slotType == "fourwhl") + " out of 200");
+            Console.WriteLine("Occupied Two Wheeler parking is " + parkingSlots.Count(e => e.IsBooked == true && e._slotType == "heavyvch") + " out of 200");
         }
 
-        void Booking(string sltNum, string vchNum, VehicleType lotType, Slot[] parkingLot)
+        public void BookSlot(string sltNum, string vchNum, VehicleType lotType)
         {
-            foreach (Slot slot in parkingLot)
+            foreach (Slot slot in parkingSlots)
             {
                 if (slot.SlotNumber == sltNum)
                 {
                     if (slot.IsBooked == false)
                     {
-                        slot.VehicleNumber = vchNum;
-                        slot.InTime = DateTime.Now;
+                        Ticket tickt = new Ticket();
+                        tickt.VehicleNumber = vchNum;
+                        tickt.InTime = DateTime.Now;
                         slot.IsBooked = true;
-                        slot.TicketNumber = tickets.Count + 1;
-                        slot.vchType = lotType.ToString();
+                        tickt.TicketNumber = tickets.Count() + 1;
+                        tickt.vchType = lotType.ToString();
                         Console.WriteLine("Slot successfully booked :-" + sltNum);
-                        tickets.Add(slot);
+                        tickets.Add(tickt);
                         break;
                     }
                     else
@@ -60,44 +59,27 @@
                     }
                 }
             }
+
+
         }
 
-        public void BookSlot(string sltNum, string vchNum, VehicleType lotType)
+        public void UnBookSlot(string sltNum, VehicleType lotType , int ticketNum)
         {
-            if (lotType == VehicleType.twowhl) 
-            {
-               Booking(sltNum, vchNum, lotType , twoWheelerSlots);
-            } 
-            else if(lotType == VehicleType.fourwhl) 
-            {
-                Booking(sltNum, vchNum, lotType, fourWheelerSlots);
-            }
-            else if(lotType == VehicleType.heavyvch) 
-            {
-                Booking(sltNum, vchNum, lotType, heavyVehicleSlots);
-            }
-     
-            
-        }
-
-        void UnBooking(string sltNum, VehicleType lotType, int ticketNum, Slot[] parkingLot)
-        {
-            foreach (Slot slot in parkingLot)
+            foreach (Slot slot in parkingSlots)
             {
                 if (slot.SlotNumber == sltNum)
                 {
                     if (slot.IsBooked == true)
                     {
                         slot.IsBooked = false;
-                        foreach (Slot item in tickets)
+                        foreach (Ticket item in tickets)
                         {
                             if (item.TicketNumber == ticketNum)
                             {
                                 item.OutTime = DateTime.Now;
                             }
                         }
-                        slot.OutTime = DateTime.Now;
-                        Console.WriteLine("Out Time :-" + slot.OutTime);
+                        Console.WriteLine("Slot Unbooked Successfully");
                         break;
                     }
                     else
@@ -109,65 +91,18 @@
             }
         }
 
-        public void UnBookSlot(string sltNum, VehicleType lotType , int ticketNum)
-        {
-            if (lotType == VehicleType.twowhl)
-            {
-                UnBooking(sltNum, lotType, ticketNum, twoWheelerSlots);
-            }
-            else if (lotType == VehicleType.fourwhl)
-            {
-                UnBooking(sltNum, lotType, ticketNum, twoWheelerSlots);
-            }
-            else if (lotType==VehicleType.heavyvch)
-            {
-                UnBooking(sltNum, lotType, ticketNum, twoWheelerSlots);
-            }
-        }
-
-            public bool ValidateSlotNumber(string slotNum , VehicleType vehicleType)
+            public bool ValidateSlotNumber(string slotNum)
             {
                 if (!string.IsNullOrEmpty(slotNum))
                 {
-                    if (vehicleType == VehicleType.twowhl)
+                    Slot foundSlot = Array.Find(parkingSlots,slot => slot.SlotNumber == slotNum);
+                    if (foundSlot==null) 
                     {
-                        Slot foundSlot = Array.Find(twoWheelerSlots,slot => slot.SlotNumber == slotNum);
-                        if (foundSlot==null) 
-                        {
-                            return false; 
-                        }
-                        else
-                        {
-                            return true;
-                        }
-                    }
-                    else if (vehicleType == VehicleType.fourwhl)
-                    {
-                        Slot foundSlot = Array.Find(fourWheelerSlots, slot => slot.SlotNumber == slotNum);
-                        if (foundSlot == null)
-                        {
-                            return false;
-                        }
-                        else
-                        {
-                            return true;
-                        }
-                    }
-                    else if (vehicleType == VehicleType.heavyvch)
-                    {
-                        Slot foundSlot = Array.Find(heavyVehicleSlots, slot => slot.SlotNumber == slotNum);
-                        if (foundSlot == null)
-                        {
-                            return false;
-                        }
-                        else
-                        {
-                            return true;
-                        }
+                       return false; 
                     }
                     else
                     {
-                        return false;
+                       return true;
                     }
                 }
                 else
@@ -193,7 +128,7 @@
         {
             if (option == 0)
             {
-                if (twoWheelerSlots.Count(e => e.IsBooked == true) == 0 && fourWheelerSlots.Count(e => e.IsBooked == true) == 0 && heavyVehicleSlots.Count(e => e.IsBooked == true) == 0)
+                if (parkingSlots.Count(e => e.IsBooked == true) == 0)
                 {
                     return false;
                 }
@@ -204,7 +139,7 @@
             }
             else
             {
-                if (twoWheelerSlots.Count(e => e.IsBooked == false) == 0 && fourWheelerSlots.Count(e => e.IsBooked == false) == 0 && heavyVehicleSlots.Count(e => e.IsBooked == false) == 0)
+                if (parkingSlots.Count(e => e.IsBooked == false) == 0)
                 {
                     return false;
                 }
@@ -220,11 +155,10 @@
         {
             if (tickets.Any())
             {
-                foreach (Slot item in tickets)
+                foreach (Ticket item in tickets)
                 {
                     Console.WriteLine("Ticket Number :- " + item.TicketNumber);
                     Console.WriteLine("Vehicle Number :- " + item.VehicleNumber);
-                    Console.WriteLine("Slot Number :- " + item.SlotNumber);
                     Console.WriteLine("In Time :- " + item.InTime);
                     Console.WriteLine("Out Time :- " + item.OutTime + "\n");
                 }
@@ -241,12 +175,11 @@
             foreach(var typeGroup in quarryToGroupByVchType)
             {
                 Console.WriteLine(typeGroup.Key + ":-");
-                foreach(var tckt in typeGroup)
+                foreach(Ticket tckt in typeGroup)
                 {
                     Console.WriteLine("\t Ticket Number :- " + tckt.TicketNumber);
                     Console.WriteLine("\t Vehicle Number :- " + tckt.VehicleNumber);
                     Console.WriteLine("\t Vehicle Type :- " + tckt.vchType);
-                    Console.WriteLine("\t Slot Number :- " + tckt.SlotNumber);
                     Console.WriteLine("\t In Time :- " + tckt.InTime);
                     Console.WriteLine("\t Out Time :- " + tckt.OutTime + "\n");
                 }
@@ -256,12 +189,12 @@
         public void ExtraTimeParkedVehicle()
         {
             var currentTime=DateTime.Now;
-            var quarryExtraTimeParkedHeavyVehicle = tickets.Where(ticket=>(currentTime - ticket.InTime).TotalMilliseconds >= 1);
-            foreach (Slot tkt in quarryExtraTimeParkedHeavyVehicle)
+            var quarryExtraTimeParkedHeavyVehicle = tickets.Where(ticket=>((currentTime - ticket.InTime).Minutes > 1 && ticket.OutTime == new DateTime(0))
+                                                                 || (ticket.OutTime != new DateTime(0) && (ticket.OutTime-ticket.InTime).TotalMinutes>1));
+            foreach (Ticket tkt in quarryExtraTimeParkedHeavyVehicle)
             {
                 Console.WriteLine("\t Ticket Number :- " + tkt.TicketNumber);
                 Console.WriteLine("\t Vehicle Number :- " + tkt.VehicleNumber);
-                Console.WriteLine("\t Slot Number :- " + tkt.SlotNumber);
                 Console.WriteLine("\t In Time :- " + tkt.InTime + "\n");
                 
             }

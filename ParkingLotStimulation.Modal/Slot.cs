@@ -7,13 +7,15 @@ using System.Threading.Tasks;
 
 namespace ParkingLotStimulation
 {
-    public class Slot : Ticket
+    public class Slot 
     {
         string _slotNumber;
         Boolean _isBooked;
-        public Slot(string slotPrefix, Boolean isbooked, int index)
+        public string _slotType;
+        public Slot(string slotType, Boolean isbooked, int index)
         {
-            _slotNumber = slotPrefix + index;
+            _slotType = slotType;
+            _slotNumber = slotType + index;
             _isBooked = isbooked;
         }
 
