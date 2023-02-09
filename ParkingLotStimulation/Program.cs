@@ -8,7 +8,7 @@ namespace ParkingLotStimulation
     {
         enum Menu
         {
-            Exit, OccupancyStats , BookSlot , UnBookSlot , DisplayTickets , DisplayTicketsByVchType ,heavyVehicleTakingExtraTime
+            Exit, OccupancyStats , BookSlot , UnBookSlot , DisplayTickets , DisplayTicketsByVchType ,VehicleTakingExtraTime
         }
 
         static void Main(string[] args)
@@ -24,7 +24,7 @@ namespace ParkingLotStimulation
                 Console.WriteLine("To Empty A slot Enter 3");
                 Console.WriteLine("To View All Tickets Enter 4");
                 Console.WriteLine("To View Tickets by Vehicle Type Enter 5");
-                Console.WriteLine("To View Heavy Vehicle taking Extra Time Enter 6");
+                Console.WriteLine("To View Vehicle taking Extra Time Enter 6");
                 Console.WriteLine("To exit Enter 0");
                 string userInput = Console.ReadLine();
                 int userAct;
@@ -42,75 +42,72 @@ namespace ParkingLotStimulation
                             break;
 
                         case Menu.BookSlot:
-                            Console.WriteLine("Enter Vehicle type \n twoWheeler->0 \n fourWheeler->1 \n heavyVehicle->2");
-                            string vehicleType = Console.ReadLine();
-                            int vchType;
-                            if (int.TryParse(vehicleType, out vchType))
+                            if (parking.ValidateParkingSpace(1))
                             {
-                                if (Enum.IsDefined(typeof(ParkingLot.VehicleType), vchType))
+                                Console.WriteLine("Enter Vehicle type \n twoWheeler->0 \n fourWheeler->1 \n heavyVehicle->2");
+                                string vehicleType = Console.ReadLine();
+                                if (parking.ValidateVehicleType(vehicleType))
                                 {
                                     Console.WriteLine("Enter Slot Number");
                                     string slotNumber = Console.ReadLine()!;
-                                    if (parking.ValidateSlotNumber(slotNumber, (ParkingLot.VehicleType)vchType))
+                                    if (parking.ValidateSlotNumber(slotNumber, Enum.Parse<ParkingLot.VehicleType>(vehicleType)))
                                     {
                                         Console.WriteLine("Enter Vehicle Number");
                                         string vehicleNum = Console.ReadLine()!;
-                                        parking.BookSlot(slotNumber, vehicleNum, (ParkingLot.VehicleType)vchType);
+                                        parking.BookSlot(slotNumber, vehicleNum, Enum.Parse<ParkingLot.VehicleType>(vehicleType));
                                         break;
                                     }
                                     else
                                     {
-                                        Warning("Invalid slotNumber");
+                                        Console.WriteLine("Invalid slotNumber");
                                         break;
                                     }
                                 }
                                 else
                                 {
-                                    Warning("Invalid Input");
+                                    Console.WriteLine("InValid Input");
                                     break;
                                 }
                             }
                             else
                             {
-                                Warning("InValid Input");
+                                Console.WriteLine("All slots are full");
                                 break;
                             }
-
                         case Menu.UnBookSlot:
-                            Console.WriteLine("Enter Vehicle type \n twoWheeler->0 \n fourWheeler->1 \n heavyVehicle->2");
-                            userInput = Console.ReadLine();
-                            if (int.TryParse(userInput, out vchType))
+                            if (parking.ValidateParkingSpace(0))
                             {
-                                if (Enum.IsDefined(typeof(ParkingLot.VehicleType), vchType))
+                                Console.WriteLine("Enter Vehicle type \n twoWheeler->0 \n fourWheeler->1 \n heavyVehicle->2");
+                                userInput = Console.ReadLine();
+                                if (parking.ValidateVehicleType(userInput))
                                 {
                                     Console.WriteLine("Enter Slot Number");
                                     string slotNumToRemove = Console.ReadLine()!;
-                                    if (parking.ValidateSlotNumber(slotNumToRemove, (ParkingLot.VehicleType)vchType))
+                                    if (parking.ValidateSlotNumber(slotNumToRemove, Enum.Parse<ParkingLot.VehicleType>(userInput)))
                                     {
                                         Console.WriteLine("Enter Ticket Number");
                                         int ticketNum = Convert.ToInt32(Console.ReadLine());
-                                        parking.UnBookSlot(slotNumToRemove, (ParkingLot.VehicleType)vchType, ticketNum);
+                                        parking.UnBookSlot(slotNumToRemove, Enum.Parse<ParkingLot.VehicleType>(userInput), ticketNum);
                                         break;
 
                                     }
                                     else
                                     {
-                                        Warning("Invalid slotNumber");
+                                        Console.WriteLine("Invalid slotNumber");
                                         break;
                                     }
                                 }
                                 else
                                 {
-                                    Warning("Invalid Input");
+                                    Console.WriteLine("Invalid Input");
                                     break;
                                 }
                             }
                             else
                             {
-                                Warning("Invalid Input");
+                                Console.WriteLine("All Slots Are vacent");
                                 break;
                             }
-
                         case Menu.DisplayTickets:
                             parking.DisplayTickets();
                             break;
@@ -119,12 +116,12 @@ namespace ParkingLotStimulation
                             parking.DisplayTicketsByVehicleType();
                             break;
 
-                        case Menu.heavyVehicleTakingExtraTime:
-                            parking.ExtraTimeParkedHeavyVehicle();
+                        case Menu.VehicleTakingExtraTime:
+                            parking.ExtraTimeParkedVehicle();
                             break;
 
                         default:
-                            Warning("wrong menu option");
+                            Console.WriteLine("wrong menu option");
                             break;
                     }
                 }
@@ -133,10 +130,6 @@ namespace ParkingLotStimulation
                     Console.WriteLine("Invalid Input");
                 }
             } while (!exit);
-            void Warning(string msg)
-            {
-                Console.WriteLine(msg);
-            }
             Console.ReadLine();
         }
     }
